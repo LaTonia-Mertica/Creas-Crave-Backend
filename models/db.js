@@ -1,11 +1,11 @@
 const Sequelize = require("sequelize");
 
-const db = new Sequelize(
-  "postgres://latoniamertica@localhost:5432/creascrave",
-  {
-    logging: false,
-  }
-);
+let dbURL = process.env.DATABASE_URL;
+if (!dbURL) {
+  dbURL = "postgres://latoniamertica@localhost:5432/creascrave";
+}
+
+const db = new Sequelize(dbURL);
 
 const Cart = require("./Cart")(db);
 const Creatives = require("./Creatives")(db);

@@ -114,6 +114,11 @@ server.get("/customersFavorites", async (req, res) => {
   });
 });
 
-server.listen(4400, () => {
+let port = process.env.PORT;
+if (!port) {
+  port = 4400;
+}
+
+server.listen(port, () => {
   console.log("Server Listening on Port 4400");
 });
