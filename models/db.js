@@ -42,11 +42,17 @@ const connectToDB = async () => {
 
   const customers = await Customers.findAll();
   if (customers.length === 0) {
-    await Customers.create({ nameFirst: "Testy", nameLast: "McTesterson" });
+    const customer = await Customers.create({
+      nameFirst: "Testy",
+      nameLast: "McTesterson",
+    });
+  } else {
+    const customer = customers[0];
   }
+
   const favorites = await Favorites.findAll();
   if (favorites.length === 0) {
-    await Favorites.create({ customerID: 1, creativeID: 1 });
+    await Favorites.create({ customerID: customer.customerID, creativeID: 1 });
   }
   const creativesInCart = await CreativesInCart.findAll();
   if (CreativesInCart.length === 0) {
