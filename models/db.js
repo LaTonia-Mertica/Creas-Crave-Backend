@@ -5,7 +5,17 @@ if (!dbURL) {
   dbURL = "postgres://latoniamertica@localhost:5432/creascrave";
 }
 
-const db = new Sequelize(dbURL);
+const db = new Sequelize(dbURL, {
+  logging: false,
+  dialect: "postgres",
+  protocol: "postgres",
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // very important
+    },
+  },
+});
 
 const Cart = require("./Cart")(db);
 const Creatives = require("./Creatives")(db);
