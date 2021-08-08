@@ -17,6 +17,7 @@ const {
 } = require("./models/db.js");
 const Op = require("sequelize").Op;
 const { ConnectionRefusedError } = require("sequelize");
+const fetch = require("node-fetch");
 
 const isLoggedInMiddleware = async (req, res, next) => {
   if (!req.headers.email || !req.headers.password) {
@@ -114,9 +115,27 @@ server.get("/customersFavorites", async (req, res) => {
   });
 });
 
+server.get(`/weather`, async (req, res) => {
+  const weatherRaw = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=San%20Jose,%20SJ,%20CR&appid=97e608cb148c49cf4f8dbe64b0cb12c8&units=imperial`
+  );
+  const data = await weatherRaw.json();
+  res.send({ sanJoseTemp: data.main.temp });
+});
+
+server.get(`/weather`, async (req, res) => {
+  const weatherRes = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?q=Albany&appid=97e608cb148c49cf4f8dbe64b0cb12c8&units=imperial`
+  );
+  const data = await weatherRes.json();
+  res.send({ albanyTemp: data.main.temp });
+});
+
 let port = process.env.PORT;
 if (!port) {
   port = 4400;
+} else {
+  port = 4404;
 }
 
 server.listen(port, () => {

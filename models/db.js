@@ -1,21 +1,32 @@
 const Sequelize = require("sequelize");
 
+let db;
 let dbURL = process.env.DATABASE_URL;
 if (!dbURL) {
-  dbURL = "postgres://latoniamertica@localhost:5432/creascrave";
+  db = new Sequelize("postgres://latoniamertica@localhost:5432/creascrave", {
+    logging: false,
+    dialect: "postgres",
+    protocol: "postgres",
+    // dialectOptions: {
+    //   ssl: {
+    //     require: true,
+    //     rejectUnauthorized: false, // very important
+    //   },
+    // },
+  });
+} else {
+  db = new Sequelize(dbURL, {
+    logging: false,
+    dialect: "postgres",
+    protocol: "postgres",
+    // dialectOptions: {
+    //   ssl: {
+    //     require: true,
+    //     rejectUnauthorized: false, // very important
+    //   },
+    // },
+  });
 }
-
-const db = new Sequelize(dbURL, {
-  logging: false,
-  dialect: "postgres",
-  protocol: "postgres",
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false, // very important
-    },
-  },
-});
 
 const Cart = require("./Cart")(db);
 const Creatives = require("./Creatives")(db);
@@ -41,18 +52,36 @@ const connectToDB = async () => {
   await db.sync(); //{ force: true }
 
   const customers = await Customers.findAll();
+  let customer;
   if (customers.length === 0) {
-    const customer = await Customers.create({
+    customer = await Customers.create({
       nameFirst: "Testy",
       nameLast: "McTesterson",
     });
   } else {
-    const customer = customers[0];
+    customer = customers[0];
   }
+
+  let creative;
+  const creatives = await Creatives.findAll();
+  if (creatives.length === 0) {
+    creative = await Creatives.create({});
+  } else {
+    creative = creatives[0];
+  }
+  // const creatives = await Creatives.findAll();
+  // if (creatives.length === 0) {
+  //   await Creatives.create({ creativeName: "My Masterpiece", filePath: "TBD" });
+
+  //   await Favorites.create({ customerID: 1, creativeID: 1 });
+  // }
 
   const favorites = await Favorites.findAll();
   if (favorites.length === 0) {
-    await Favorites.create({ customerID: customer.customerID, creativeID: 1 });
+    await Favorites.create({
+      customerID: customer.customerID,
+      creativeID: creative.id,
+    });
   }
   const creativesInCart = await CreativesInCart.findAll();
   if (CreativesInCart.length === 0) {
@@ -64,13 +93,6 @@ const connectToDB = async () => {
   const cart = await Cart.findAll();
   if (Cart.length === 0) {
     await Cart.create({ customerID: 1 });
-  }
-
-  const creatives = await Creatives.findAll();
-  if (creatives.length === 0) {
-    await Creatives.create({ creativeName: "My Masterpiece", filePath: "TBD" });
-
-    await Favorites.create({ customerID: 1, creativeID: 1 });
   }
 };
 
