@@ -1,5 +1,6 @@
 const express = require("express");
-const server = express();
+const server4400 = express();
+const server4404 = express();
 
 const cors = require("cors");
 server.use(cors());
@@ -45,19 +46,19 @@ server.get(`/`, (req, res) => {
   res.send({ hello: "Code World - Creas Crave API is Running!" });
 });
 
-server.get("/customers/:pageNum", isLoggedInMiddleware, async (req, res) => {
-  const page = parseInt(req.params.pageNum);
-  if (page <= 0) {
-    res.send({ customers: await Customers.findAndCountAll({ limit: 5 }) });
-  } else {
-    res.send({
-      customers: await Customers.findAndCountAll({
-        limit: 5,
-        offset: 5 * (page - 1),
-      }),
-    });
-  }
-});
+// server.get("/customers/:pageNum", isLoggedInMiddleware, async (req, res) => {
+//   const page = parseInt(req.params.pageNum);
+//   if (page <= 0) {
+//     res.send({ customers: await Customers.findAndCountAll({ limit: 5 }) });
+//   } else {
+//     res.send({
+//       customers: await Customers.findAndCountAll({
+//         limit: 5,
+//         offset: 5 * (page - 1),
+//       }),
+//     });
+//   }
+// });
 
 server.post("/customers", async (req, res) => {
   if (req.body.addressShippingZipCode.length !== 5) {
@@ -75,18 +76,18 @@ server.post("/customers", async (req, res) => {
   }
 });
 
-server.post(`/customersSearch`, async (req, res) => {
-  res.send({
-    customers: await Customers.findAll({
-      where: {
-        [Op.or]: {
-          nameFirst: { [Op.iLike]: `%${req.body.searchQuery}%` },
-          nameLast: { [Op.iLike]: `%${req.body.searchQuery}%` },
-        },
-      },
-    }),
-  });
-});
+// server.post(`/customersSearch`, async (req, res) => {
+//   res.send({
+//     customers: await Customers.findAll({
+//       where: {
+//         [Op.or]: {
+//           nameFirst: { [Op.iLike]: `%${req.body.searchQuery}%` },
+//           nameLast: { [Op.iLike]: `%${req.body.searchQuery}%` },
+//         },
+//       },
+//     }),
+//   });
+// });
 
 server.post(`/login`, async (req, res) => {
   const customersDB = await Customers.findOne({
@@ -134,10 +135,12 @@ server.get(`/weather`, async (req, res) => {
 let port = process.env.PORT;
 if (!port) {
   port = 4400;
-} else {
-  port = 4404;
 }
 
-server.listen(port, () => {
+server4400.listen(port, () => {
   console.log("Server Listening on Port 4400");
+});
+
+server4404.listen(port, () => {
+  console.log("Server Listening on Port 4404");
 });
