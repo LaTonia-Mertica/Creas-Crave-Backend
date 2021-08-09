@@ -7,24 +7,18 @@ if (!dbURL) {
     logging: false,
     dialect: "postgres",
     protocol: "postgres",
-    // dialectOptions: {
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false, // very important
-    //   },
-    // },
   });
 } else {
   db = new Sequelize(dbURL, {
     logging: false,
     dialect: "postgres",
     protocol: "postgres",
-    // dialectOptions: {
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false, // very important
-    //   },
-    // },
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false, // very important
+      },
+    },
   });
 }
 
@@ -65,7 +59,11 @@ const connectToDB = async () => {
   let creative;
   const creatives = await Creatives.findAll();
   if (creatives.length === 0) {
-    creative = await Creatives.create({});
+    creative = await Creatives.create({
+      creativeName: "My Masterpiece",
+      filePath: "TBD",
+    });
+    await Favorites.create({ customerID: 1, creativeID: 1 });
   } else {
     creative = creatives[0];
   }
@@ -76,6 +74,7 @@ const connectToDB = async () => {
   //   await Favorites.create({ customerID: 1, creativeID: 1 });
   // }
 
+  let favorites;
   const favorites = await Favorites.findAll();
   if (favorites.length === 0) {
     await Favorites.create({
@@ -83,6 +82,7 @@ const connectToDB = async () => {
       creativeID: creative.id,
     });
   }
+  let creativesInCart;
   const creativesInCart = await CreativesInCart.findAll();
   if (CreativesInCart.length === 0) {
     await CreativesInCart.create({
@@ -90,6 +90,7 @@ const connectToDB = async () => {
       cartID: 1,
     });
   }
+  let cart;
   const cart = await Cart.findAll();
   if (Cart.length === 0) {
     await Cart.create({ customerID: 1 });
