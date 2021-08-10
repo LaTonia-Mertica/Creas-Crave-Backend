@@ -74,7 +74,6 @@ const connectToDB = async () => {
   //   await Favorites.create({ customerID: 1, creativeID: 1 });
   // }
 
-  let favorites;
   const favorites = await Favorites.findAll();
   if (favorites.length === 0) {
     await Favorites.create({
@@ -82,7 +81,7 @@ const connectToDB = async () => {
       creativeID: creative.id,
     });
   }
-  let creativesInCart;
+
   const creativesInCart = await CreativesInCart.findAll();
   if (CreativesInCart.length === 0) {
     await CreativesInCart.create({
@@ -90,7 +89,7 @@ const connectToDB = async () => {
       cartID: 1,
     });
   }
-  let cart;
+
   const cart = await Cart.findAll();
   if (Cart.length === 0) {
     await Cart.create({ customerID: 1 });

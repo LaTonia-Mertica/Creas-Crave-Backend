@@ -1,6 +1,6 @@
 const express = require("express");
-const server4400 = express();
-const server4404 = express();
+
+const server = express();
 
 const cors = require("cors");
 server.use(cors());
@@ -19,6 +19,7 @@ const {
 const Op = require("sequelize").Op;
 const { ConnectionRefusedError } = require("sequelize");
 const fetch = require("node-fetch");
+const Newsletter = require("./models/Newsletter.js");
 
 const isLoggedInMiddleware = async (req, res, next) => {
   if (!req.headers.email || !req.headers.password) {
@@ -108,6 +109,13 @@ server.post(`/login`, async (req, res) => {
   }
 });
 
+server.post(`/newsletter`, async (req, res) => {
+  const newsletterDB = await Newsletter.findOne({
+    include: { emailAddress: req.body.emailAddress },
+  });
+  console.log(newsletterDB);
+});
+
 server.get("/customersFavorites", async (req, res) => {
   res.send({
     customers: await Customers.findAll({
@@ -116,7 +124,7 @@ server.get("/customersFavorites", async (req, res) => {
   });
 });
 
-server.get(`/weather`, async (req, res) => {
+server.get(`/weatherSanJose`, async (req, res) => {
   const weatherRaw = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=San%20Jose,%20SJ,%20CR&appid=97e608cb148c49cf4f8dbe64b0cb12c8&units=imperial`
   );
@@ -124,7 +132,7 @@ server.get(`/weather`, async (req, res) => {
   res.send({ sanJoseTemp: data.main.temp });
 });
 
-server.get(`/weather`, async (req, res) => {
+server.get(`/weatherAlbany`, async (req, res) => {
   const weatherRes = await fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=Albany&appid=97e608cb148c49cf4f8dbe64b0cb12c8&units=imperial`
   );
@@ -135,12 +143,12 @@ server.get(`/weather`, async (req, res) => {
 let port = process.env.PORT;
 if (!port) {
   port = 4400;
+} else {
+  if (!port === 4400) {
+    port = 4404;
+  }
 }
 
-server4400.listen(port, () => {
-  console.log("Server Listening on Port 4400");
-});
-
-server4404.listen(port, () => {
-  console.log("Server Listening on Port 4404");
+server.listen(port, () => {
+  console.log(`Server Listening on Port ${port}`);
 });
