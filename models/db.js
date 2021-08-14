@@ -28,6 +28,7 @@ const CreativesInCart = require("./CreativesInCart")(db);
 const Customers = require("./Customers")(db);
 const Favorites = require("./Favorites")(db);
 const Users = require("./Users")(db);
+const Subscribers = require("./Subscribers")(db);
 
 const connectToDB = async () => {
   await db.authenticate();
@@ -42,6 +43,8 @@ const connectToDB = async () => {
   Favorites.belongsTo(Creatives, { foreignKey: "creativeID" });
 
   Creatives.hasMany(Creatives, { primaryKey: "creativeID" });
+
+  Subscribers.belongsTo(Subscribers, { primaryKey: "subscriberID" });
 
   await db.sync(); //{ force: true }
 
@@ -96,6 +99,15 @@ const connectToDB = async () => {
   }
 };
 
+const subscribers = await Subscribers.findAll();
+if (subscribers.length === 0) {
+  await subscribers.create({
+    emailAddress: "testymctesterson@gamil.com",
+  });
+} else {
+  subscribers = subscribers[0];
+}
+
 connectToDB();
 module.exports = {
   db,
@@ -104,5 +116,6 @@ module.exports = {
   CreativesInCart,
   Customers,
   Favorites,
+  Subscribers,
   Users,
 };

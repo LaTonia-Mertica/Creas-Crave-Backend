@@ -14,12 +14,13 @@ const {
   CreativesInCart,
   Customers,
   Favorites,
+  Subscribers,
   Users,
 } = require("./models/db.js");
 const Op = require("sequelize").Op;
 const { ConnectionRefusedError } = require("sequelize");
 const fetch = require("node-fetch");
-const Newsletter = require("./models/Newsletter.js");
+const Subscribers = require("./models/subscribers.js");
 
 const isLoggedInMiddleware = async (req, res, next) => {
   if (!req.headers.email || !req.headers.password) {
@@ -109,11 +110,11 @@ server.post(`/login`, async (req, res) => {
   }
 });
 
-server.post(`/newsletter`, async (req, res) => {
-  const newsletterDB = await Newsletter.findOne({
+server.post(`/subscribers`, async (req, res) => {
+  const subscribersDB = await subscribers.findOne({
     include: { emailAddress: req.body.emailAddress },
   });
-  console.log(newsletterDB);
+  console.log(subscribersDB);
 });
 
 server.get("/customersFavorites", async (req, res) => {

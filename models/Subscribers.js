@@ -1,8 +1,8 @@
 const DT = require("sequelize").DataTypes;
 
 module.exports = (db) => {
-  return db.define("newsletter", {
-    newsletterID: {
+  return db.define("subscribers", {
+    subscriberID: {
       type: DT.INTEGER,
       primaryKey: true,
       autoIncrement: true,
