@@ -20,7 +20,6 @@ const {
 const Op = require("sequelize").Op;
 const { ConnectionRefusedError } = require("sequelize");
 const fetch = require("node-fetch");
-const Subscribers = require("./models/subscribers.js");
 
 const isLoggedInMiddleware = async (req, res, next) => {
   if (!req.headers.email || !req.headers.password) {
