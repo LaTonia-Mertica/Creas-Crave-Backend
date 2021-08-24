@@ -143,10 +143,6 @@ server.get(`/weatherAlbany`, async (req, res) => {
 let port = process.env.PORT;
 if (!port) {
   port = 4400;
-} else {
-  if (!port === 4400) {
-    port = 4404;
-  }
 }
 
 server.listen(port, () => {
