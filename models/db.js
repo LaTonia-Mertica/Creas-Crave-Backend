@@ -28,7 +28,7 @@ const CreativesInCart = require("./CreativesInCart")(db);
 const Customers = require("./Customers")(db);
 const Favorites = require("./Favorites")(db);
 const Users = require("./Users")(db);
-// const Subscribers = require("./Subscribers")(db);
+const Subscribers = require("./Subscribers")(db);
 
 const connectToDB = async () => {
   await db.authenticate();
@@ -107,16 +107,15 @@ const connectToDB = async () => {
   //   subscribers = subscribers[0];
   // }
   // }
-
-  connectToDB();
-  module.exports = {
-    db,
-    Cart,
-    Creatives,
-    CreativesInCart,
-    Customers,
-    Favorites,
-    // Subscribers,
-    Users,
-  };
+};
+connectToDB();
+module.exports = {
+  db,
+  Cart,
+  Creatives,
+  CreativesInCart,
+  Customers,
+  Favorites,
+  Subscribers,
+  Users,
 };

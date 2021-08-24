@@ -7,11 +7,7 @@ module.exports = (db) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    customerID: DT.INTEGER,
-    userID: DT.INTEGER,
     emailAddress: DT.STRING,
     subscribed: DT.BOOLEAN,
-    // createAt: TIMESTAMP,
-    // updatedAt: TIMESTAMP,
   });
 };

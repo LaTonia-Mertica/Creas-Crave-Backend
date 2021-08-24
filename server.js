@@ -21,6 +21,8 @@ const Op = require("sequelize").Op;
 const { ConnectionRefusedError } = require("sequelize");
 const fetch = require("node-fetch");
 
+const apiKey = process.env.OPEN_API_WEATHER_KEY;
+
 const isLoggedInMiddleware = async (req, res, next) => {
   if (!req.headers.email || !req.headers.password) {
     res.send({ error: "Authentication Required as Specified in Criteria" });
@@ -110,10 +112,25 @@ server.post(`/login`, async (req, res) => {
 });
 
 server.post(`/subscribers`, async (req, res) => {
-  const subscribersDB = await subscribers.findOne({
-    include: { emailAddress: req.body.emailAddress },
-  });
-  console.log(subscribersDB);
+  if (req.body.subscribed) {
+    const newSubscriber = await Subscribers.create({
+      emailAddress: req.body.emailAddress,
+      subscribed: true,
+    });
+  } else {
+    const existingSubscriber = await Subscribers.findOne({
+      where: { emailAddress: req.body.emailAddress },
+    });
+
+    if (existingSubscriber) {
+      existingSubscriber.subscribed = false;
+      await existingSubscriber.save();
+    } else {
+      //they weren't subscribed in the first place, so just ignore
+    }
+  }
+
+  res.send({ success: true });
 });
 
 server.get("/customersFavorites", async (req, res) => {
@@ -126,7 +143,7 @@ server.get("/customersFavorites", async (req, res) => {
 
 server.get(`/weatherSanJose`, async (req, res) => {
   const weatherRaw = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=San%20Jose,%20SJ,%20CR&appid=97e608cb148c49cf4f8dbe64b0cb12c8&units=imperial`
+    `https://api.openweathermap.org/data/2.5/weather?q=San%20Jose,%20SJ,%20CR&appid=${apiKey}&units=imperial`
   );
   const data = await weatherRaw.json();
   res.send({ sanJoseTemp: data.main.temp });
@@ -134,7 +151,7 @@ server.get(`/weatherSanJose`, async (req, res) => {
 
 server.get(`/weatherAlbany`, async (req, res) => {
   const weatherRes = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=Albany&appid=97e608cb148c49cf4f8dbe64b0cb12c8&units=imperial`
+    `https://api.openweathermap.org/data/2.5/weather?q=Albany&appid=${apiKey}&units=imperial`
   );
   const data = await weatherRes.json();
   res.send({ albanyTemp: data.main.temp });
