@@ -3,7 +3,7 @@
 ###### <a href="https://www.latoniamertica.dev/creas-crave-capstone/" target="_blank">visit Creas Crave Capstone Powered by This Backend by La'Tonia Mertica</a>
 <br>
 
-<p align="center"><img src="images/creascraveerd.png" width="100%" /title="Creas Crave db ERD by La'Tonia Mertica" ></p>
+<p align="center"><img src="images/erdAllWhite.png" width="100%" /title="Creas Crave db ERD by La'Tonia Mertica" ></p>
 
 ##### FIRST NAME: La'Tonia Mertica
 ###### note_1: pronounced *luh tone yuh merr treece*
