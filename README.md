@@ -4,6 +4,7 @@
 <br>
 
 <p align="center"><img src="images/erdAllWhite.png" width="100%" /title="Creas Crave db ERD by La'Tonia Mertica" ></p>
+<br>
 
 ##### FIRST NAME: La'Tonia Mertica
 ###### note_1: pronounced *luh tone yuh merr treece*
