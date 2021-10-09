@@ -9,8 +9,8 @@
 - POST aka server.post() **a)** requires zip code length, **b)** checks database to ensure email and password are known and returns errors when they are not, and **c)** adds subscribers and favorites
 - process.env.PORT dynamically implements port and defaults to port 4400 as backup<br>
 - server.listen() displays confirmaton port is running and where<br>
-<br>
-**NOTE:** server.js is per what name the file that contains this backend code - i.e. same as app.js
+
+**NOTE:** server.js is per what name the file that contains this backend code - i.e. same as app.js<br>
 
 **NEXT STEP** <br>
 1. fully wire backend
