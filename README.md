@@ -6,9 +6,10 @@
 - models manage user-inputted/activated content - database aka db, Cart, Creatives, CreativesInCart, Customers, Favorites, Subscribers, and Users (all capitalized per React App components)<br>
 - middleware implements async/await with if/else statements to authenticate email and password with error return as backup<br>
 - GET aka server.get() displays **a)** hello message in browser to indicate backend running and **b)** dynamic weather information called from openWeather API<br>
-- POST aka server.post() **a)** requires zip code length, **b)** checks database to ensure email and password are known and returns errors when they are not<br>, and **c)** adds subscribers and favorites
+- POST aka server.post() **a)** requires zip code length, **b)** checks database to ensure email and password are known and returns errors when they are not, and **c)** adds subscribers and favorites
 - process.env.PORT dynamically implements port and defaults to port 4400 as backup<br>
 - server.listen() displays confirmaton port is running and where<br>
+<br>
 **NOTE:** server.js is per what name the file that contains this backend code - i.e. same as app.js
 
 **NEXT STEP** <br>
